@@ -7,12 +7,14 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(id);
+      setMobileMenuOpen(false);
     }
   };
 
@@ -32,10 +34,62 @@ const Index = () => {
               <button onClick={() => scrollToSection('faq')} className="text-sm font-medium hover:text-primary transition-colors">FAQ</button>
               <button onClick={() => scrollToSection('contacts')} className="text-sm font-medium hover:text-primary transition-colors">Контакты</button>
             </div>
-            <Button className="hidden md:inline-flex">Консультация</Button>
+            <div className="flex items-center gap-4">
+              <Button className="hidden md:inline-flex">Консультация</Button>
+              <button 
+                className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Меню"
+              >
+                <Icon name={mobileMenuOpen ? 'X' : 'Menu'} size={24} className="text-foreground" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
+
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-background/95 backdrop-blur-sm md:hidden">
+          <div className="container mx-auto px-6 py-6 mt-20">
+            <nav className="flex flex-col space-y-6">
+              <button 
+                onClick={() => scrollToSection('home')} 
+                className="text-left text-lg font-medium hover:text-primary transition-colors py-2 border-b border-border"
+              >
+                Главная
+              </button>
+              <button 
+                onClick={() => scrollToSection('services')} 
+                className="text-left text-lg font-medium hover:text-primary transition-colors py-2 border-b border-border"
+              >
+                Услуги
+              </button>
+              <button 
+                onClick={() => scrollToSection('blog')} 
+                className="text-left text-lg font-medium hover:text-primary transition-colors py-2 border-b border-border"
+              >
+                Блог
+              </button>
+              <button 
+                onClick={() => scrollToSection('faq')} 
+                className="text-left text-lg font-medium hover:text-primary transition-colors py-2 border-b border-border"
+              >
+                FAQ
+              </button>
+              <button 
+                onClick={() => scrollToSection('contacts')} 
+                className="text-left text-lg font-medium hover:text-primary transition-colors py-2 border-b border-border"
+              >
+                Контакты
+              </button>
+              <Button size="lg" className="w-full mt-4">
+                <Icon name="Calendar" size={20} className="mr-2" />
+                Консультация
+              </Button>
+            </nav>
+          </div>
+        </div>
+      )}
 
       <section id="home" className="pt-20 pb-28 bg-gradient-to-b from-muted/30 to-background">
         <div className="container mx-auto px-6">
